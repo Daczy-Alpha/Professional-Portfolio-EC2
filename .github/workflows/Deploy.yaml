@@ -1,18 +1,16 @@
+name: CI/CD on PR Merge
 
-name: CICD Pipeline
 on:
   pull_request:
+    types: [closed]
     branches:
-      - main
+      - main  # change this to your target branch
 
 jobs:
-  Intergration:
+  deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Run a linux command
-        run: cat index.html
-
-
