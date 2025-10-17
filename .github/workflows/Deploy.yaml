@@ -43,5 +43,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i mykey.pem ec2-user@13.48.42.102 "docker pull 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}"
 
 
-          ssh -o StrictHostKeyChecking=no -i mykey.pem ec2-user@13.48.42.102 "docker run -d --portfolio -p 443:5000 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}"
+          ssh -o StrictHostKeyChecking=no -i mykey.pem ec2-user@13.48.42.102 "docker run -d -p 443:5000 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}"
 
