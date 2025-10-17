@@ -27,6 +27,6 @@ jobs:
 
       - name: Build and Push Docker image to ECR
         run:
-          docker build -t portfolio-ec2 .
-          docker tag portfolio-ec2:${{ github.run_number }} 487620625686.dkr.ecr.eu-north-1.amazonaws.com/portfolio-ec2:${{ github.run_number }}
-          docker push 487620625686.dkr.ecr.eu-north-1.amazonaws.com/portfolio-ec2:${{ github.run_number }}
+          docker build -t ec2-portfolio .
+          docker tag ec2-portfolio:${{ github.run_number }} 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}
+          docker push 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}
