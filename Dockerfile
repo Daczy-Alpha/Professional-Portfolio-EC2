@@ -1,5 +1,4 @@
-FROM amazonlinux:2023
-RUN sudo dnf update -y
+FROM nginx:alpine
 RUN sudo rm -rf /usr/share/nginx/html/*
 WORKDIR /usr/share/nginx/html
 COPY . /usr/share/nginx/html
