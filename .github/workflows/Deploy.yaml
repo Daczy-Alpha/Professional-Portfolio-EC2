@@ -51,13 +51,13 @@ jobs:
     steps:
       - name: update-k8s-deployment-config
         run: |
-          git clone https://${secret.GITOPS_USERNAME}:${secret.GITOPS_TOKEN}@github.com/Daczy-Alpha/K8s-configurations.git
+          git clone https://${secrets.GITOPS_USERNAME}:${secrets.GITOPS_TOKEN}@github.com/Daczy-Alpha/K8s-configurations.git
           cat deployment.yaml
           sed -i "s+487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:.*+487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}+g" K8s-configurations/deployment.yaml
           cat K8s-configurations/deployment.yaml
           git add .
-          git config user.name ${secret.GITOPS_USERNAME}
-          git config user.email ${secret.GITOPS_EMAIL}
+          git config user.name ${secrets.GITOPS_USERNAME}
+          git config user.email ${secrets.GITOPS_EMAIL}
           git commit -m "update deployment image to ${{ github.run_number }}"
-          git remote add origin https://${secret.GITOPS_USERNAME}:${secret.GITOPS_TOKEN}@github.com/Daczy-Alpha/K8s-configurations.git
+          git remote add origin https://${secrets.GITOPS_USERNAME}:${secrets.GITOPS_TOKEN}@github.com/Daczy-Alpha/K8s-configurations.git
           git push origin main
