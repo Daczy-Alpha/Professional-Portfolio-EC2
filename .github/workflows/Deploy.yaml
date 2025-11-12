@@ -31,17 +31,33 @@ jobs:
           docker tag ec2-portfolio:${{ github.run_number }} 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}
           docker push 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}
   
-  continuous-deployment:
+  # continuous-deployment:
+  #   runs-on: ubuntu-latest
+  #   needs: continuous-integration
+  #   steps:
+  #     - name: Check my ssh key
+  #       run: |
+  #         echo "${{ secrets.EC2_SSH_KEY }}" > mykey.pem
+  #         chmod 400 mykey.pem
+
+  #         ssh -o StrictHostKeyChecking=no -i mykey.pem ec2-user@13.48.42.102 "docker pull 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}"
+
+
+  #         ssh -o StrictHostKeyChecking=no -i mykey.pem ec2-user@13.48.42.102 "docker run -d -p 443:80 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}"
+
+  continuous-cluster-deployment:
     runs-on: ubuntu-latest
     needs: continuous-integration
     steps:
-      - name: Check my ssh key
+      - name: update-k8s-deployment-config
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > mykey.pem
-          chmod 400 mykey.pem
-
-          ssh -o StrictHostKeyChecking=no -i mykey.pem ec2-user@13.48.42.102 "docker pull 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}"
-
-
-          ssh -o StrictHostKeyChecking=no -i mykey.pem ec2-user@13.48.42.102 "docker run -d -p 2025:80 487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}"
-
+          git clone https://${secret.GITOPS_USERNAME}:${secret.GITOPS_TOKEN}@github.com/Daczy-Alpha/K8s-configurations.git
+          cat deployment.yaml
+          sed -i "s+487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:.*+487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}+g" K8s-configurations/deployment.yaml
+          cat K8s-configurations/deployment.yaml
+          git add .
+          git config user.name ${secret.GITOPS_USERNAME}
+          git config user.email ${secret.GITOPS_EMAIL}
+          git commit -m "update deployment image to ${{ github.run_number }}"
+          git remote add origin https://${secret.GITOPS_USERNAME}:${secret.GITOPS_TOKEN}@github.com/Daczy-Alpha/K8s-configurations.git
+          git push origin main
