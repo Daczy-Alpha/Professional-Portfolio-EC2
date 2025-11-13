@@ -60,5 +60,4 @@ jobs:
           git config user.name ${{ secrets.GITOPS_USERNAME }}
           git config user.email ${{ secrets.GITOPS_EMAIL }}
           git commit -m "update deployment image to ${{ github.run_number }}"
-          git remote add origin https://${{ secrets.GITOPS_USERNAME }}:${{ secrets.GITOPS_TOKEN}}@github.com/Daczy-Alpha/K8s-configurations.git
           git push origin main
