@@ -51,7 +51,7 @@ jobs:
     steps:
       - name: update-k8s-deployment-config
         run: |
-          git clone https:${{ secrets.GITOPS_USERNAME }}:${{secrets.GITOPS_TOKEN}}@//github.com/Daczy-Alpha/K8s-configurations.git
+          git clone https://${{ secrets.GITOPS_USERNAME }}:${{secrets.GITOPS_TOKEN}}@github.com/Daczy-Alpha/K8s-configurations.git
           cd K8s-configurations
           cat deployment.yaml
           sed -i "s+487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:.*+487620625686.dkr.ecr.eu-north-1.amazonaws.com/ec2-portfolio:${{ github.run_number }}+g" deployment.yaml
